@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
@@ -11,6 +11,7 @@ import { Button } from "@mui/material";
 
 function Customerlist() {
     const [customers, setCustomers] = useState([]);
+    const gridRef = useRef();
 
     const [columndefs] = useState([
         {field: "firstname", sortable: true, filter: true, width: 150,},
@@ -20,15 +21,15 @@ function Customerlist() {
         {field: "city", sortable: true, filter: true, width: 120,},
         {field: "email", sortable: true, filter: true, width: 240,},
         {field: "phone", sortable: true, filter: true, width: 160,},
-        {   width: 200,
+        {   width: 200,  hide: true,
             cellRenderer: (params) => (
             <EditCustomer data={params.data} updateCustomer={updateCustomer} />
         ),},
-        {   width: 140,
+        {   width: 140,  hide: true,
             cellRenderer: (params) => (
             <AddTraining data={params.data} addTraining={addTraining} />
         ),},
-        {   width: 200,
+        {   width: 200, hide: true,
             cellRenderer: (params) => (
             <Button color="error" variant="contained" onClick={() => deleteCustomer(params.data)}>
                 {""} Delete{""}
@@ -112,7 +113,17 @@ function Customerlist() {
             }
         })
         .catch((err) => console.log(err));
-    }
+    };
+      
+      const getParams = () => {
+        return {
+            fileName:"customers-ptapp.csv",
+        };
+      };
+
+    const onButtonExport = useCallback(() => {
+        gridRef.current.api.exportDataAsCsv(getParams());
+    }, []);
 
     return (
         <>
@@ -126,12 +137,14 @@ function Customerlist() {
             }}
         >
             <AgGridReact
+                ref={gridRef}
                 rowData={customers}
                 columnDefs={columndefs}
                 pagination={true}
                 paginationPageSize={11}
             />{""}
         </div>
+        <Button onClick={onButtonExport}>Export to CSV</Button>
         </>
     )
 }
