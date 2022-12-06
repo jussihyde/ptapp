@@ -4,17 +4,31 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 import { CUSTOMER_API } from "../Constants";
 
+import AddCustomer from "./AddCustomer";
+import EditCustomer from "./EditCustomer"
+import { Button } from "@mui/material";
+
 function Customerlist() {
     const [customers, setCustomers] = useState([]);
 
     const [columndefs] = useState([
-        {field: "firstname", sortable: true, filter: true,},
-        {field: "lastname", sortable: true, filter: true,},
-        {field: "streetaddress", sortable: true, filter: true,},
-        {field: "postcode", sortable: true, filter: true,},
-        {field: "city", sortable: true, filter: true,},
-        {field: "email", sortable: true, filter: true,},
-        {field: "phone", sortable: true, filter: true,},
+        {field: "firstname", sortable: true, filter: true, width: 150,},
+        {field: "lastname", sortable: true, filter: true, width: 150,},
+        {field: "streetaddress", sortable: true, filter: true, width: 240,},
+        {field: "postcode", sortable: true, filter: true, width: 120,},
+        {field: "city", sortable: true, filter: true, width: 120,},
+        {field: "email", sortable: true, filter: true, width: 240,},
+        {field: "phone", sortable: true, filter: true, width: 240,},
+        {   width: 200,
+            cellRenderer: (params) => (
+            <EditCustomer data={params.data} updateCustomer={updateCustomer} />
+        ),},
+        {   width: 200,
+            cellRenderer: (params) => (
+            <Button color="error" variant="contained" onClick={() => deleteCustomer(params.data)}>
+                {""} Delete{""}
+            </Button>
+        ),},
     ]);
 
     useEffect(() => {
@@ -34,8 +48,55 @@ function Customerlist() {
         .catch((err) => console.error(err));
     };
 
+    const addCustomer = (customer) => {
+        fetch(CUSTOMER_API, {
+            method: "POST", headers: { "Content-type": "application/json" },
+            body: JSON.stringify(customer), 
+        })
+        .then((response) => {
+            if (response.ok) {
+                getCustomers();
+            } else {
+                alert("Error adding customer")
+            }
+        })
+        .catch((err) => console.log(err));
+    };
+
+    const deleteCustomer = (data) => {
+        if (window.confirm("Do you want to delete?")) {
+            fetch(data.links[1].href, {
+                method: "DELETE",
+            })
+            .then((response) => {
+                if (response.ok) {
+                    getCustomers();
+                } else {
+                    alert("Error with delete")
+                }
+            })
+            .catch((err) => console.log(err));
+        }
+    };
+
+    const updateCustomer = (customer, url) => {
+        fetch(url, {
+            method: "PUT", headers: { "Content-type": "application/json" },
+            body: JSON.stringify(customer),
+        })
+        .then((response) => {
+            if (response.ok) {
+                getCustomers();
+            } else {
+                alert("Error updating table edited data")
+            }
+        })
+        .catch((err) => console.log(err));
+    };
+
     return (
         <>
+        <AddCustomer addCustomer={addCustomer} />
         <div
             className="ag-theme-material"
             style={{
