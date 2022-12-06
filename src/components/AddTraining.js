@@ -50,7 +50,7 @@ export default function AddTraining(props) {
               <DialogContentText></DialogContentText>
               <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={fiLocale}>
                 <DatePicker
-                    label="Date"
+                    label="Date and time"
                     inputFormat='dd.MM.yyyy p'
                     value={training.date}
                     onChange={value => setTraining({...training, date: value})}
