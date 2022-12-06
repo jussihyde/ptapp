@@ -3,8 +3,9 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 import format from 'date-fns/format';
-import { TRAININGWITHCUSTOMER_API } from "../Constants";
+import { TRAININGS_API, TRAININGWITHCUSTOMER_API } from "../Constants";
 import { fi } from "date-fns/locale";
+import { Button } from "@mui/material";
 
 function Trainingslist() {
     const [trainings, setTrainings] = useState([]);
@@ -16,6 +17,12 @@ function Trainingslist() {
         {field: "activity", sortable: true, filter: true,},
         {field: "customer.firstname", sortable: true, filter: true,},
         {field: "customer.lastname", sortable: true, filter: true,},
+        {   width: 200,
+            cellRenderer: (params) => (
+            <Button color="error" variant="contained" onClick={() => deleteTraining(params.data.id)}>
+                {""} Delete{""}
+            </Button>
+        ),},
     ]);
 
     useEffect(() => {
@@ -33,6 +40,22 @@ function Trainingslist() {
         })
         .then((data) => setTrainings(data))
         .catch((err) => console.error(err));
+    };
+
+    const deleteTraining = (data) => {
+        if (window.confirm("Do you want to delete?")) {
+            fetch(TRAININGS_API+"/"+data, {
+                method: "DELETE",
+            })
+            .then((response) => {
+                if (response.ok) {
+                    getTrainings();
+                } else {
+                    alert("Error with delete")
+                }
+            })
+            .catch((err) => console.log(err));
+        }
     };
 
     return (

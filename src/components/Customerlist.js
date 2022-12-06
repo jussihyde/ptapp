@@ -19,12 +19,12 @@ function Customerlist() {
         {field: "postcode", sortable: true, filter: true, width: 120,},
         {field: "city", sortable: true, filter: true, width: 120,},
         {field: "email", sortable: true, filter: true, width: 240,},
-        {field: "phone", sortable: true, filter: true, width: 240,},
+        {field: "phone", sortable: true, filter: true, width: 160,},
         {   width: 200,
             cellRenderer: (params) => (
             <EditCustomer data={params.data} updateCustomer={updateCustomer} />
         ),},
-        {   width: 200,
+        {   width: 140,
             cellRenderer: (params) => (
             <AddTraining data={params.data} addTraining={addTraining} />
         ),},

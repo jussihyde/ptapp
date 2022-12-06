@@ -42,7 +42,7 @@ export default function AddTraining(props) {
     return (
         <div>
           <Button variant="outlined" onClick={handleClickOpen}>
-            Add training to customer
+            + Training
           </Button>
           <Dialog open={open} onClose={handleClose}>
             <DialogTitle>Add training</DialogTitle>
