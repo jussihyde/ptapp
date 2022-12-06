@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
-import { CUSTOMER_API } from "../Constants";
+import { CUSTOMER_API, TRAININGS_API } from "../Constants";
 
 import AddCustomer from "./AddCustomer";
-import EditCustomer from "./EditCustomer"
+import EditCustomer from "./EditCustomer";
+import AddTraining from "./AddTraining";
 import { Button } from "@mui/material";
 
 function Customerlist() {
@@ -22,6 +23,10 @@ function Customerlist() {
         {   width: 200,
             cellRenderer: (params) => (
             <EditCustomer data={params.data} updateCustomer={updateCustomer} />
+        ),},
+        {   width: 200,
+            cellRenderer: (params) => (
+            <AddTraining data={params.data} addTraining={addTraining} />
         ),},
         {   width: 200,
             cellRenderer: (params) => (
@@ -93,6 +98,21 @@ function Customerlist() {
         })
         .catch((err) => console.log(err));
     };
+
+    const addTraining = (training) => {
+        fetch(TRAININGS_API, {
+            method: "POST", headers: { "Content-type": "application/json" },
+            body: JSON.stringify(training),
+        })
+        .then((response) => {
+            if (response.ok) {
+                getCustomers();
+            } else {
+                alert("Error adding trainings to customer")
+            }
+        })
+        .catch((err) => console.log(err));
+    }
 
     return (
         <>
