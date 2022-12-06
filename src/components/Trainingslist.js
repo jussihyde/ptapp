@@ -28,7 +28,7 @@ function Trainingslist() {
             if (response.ok) {
                 return response.json();
             } else {
-                alert("Error fetching customer data")
+                alert("Error fetching training data")
             }
         })
         .then((data) => setTrainings(data))
