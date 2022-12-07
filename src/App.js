@@ -3,6 +3,8 @@ import AppBar from "@mui/material/AppBar";
 import { Tab, Tabs, Typography } from "@mui/material";
 import Customerlist from "./components/Customerlist";
 import Trainingslist from "./components/Trainingslist";
+import CalendarView from "./components/CalendarView";
+import ChartView from "./components/ChartView";
 import './App.css';
 
 function App() {
@@ -27,10 +29,14 @@ function App() {
         >
           <Tab label="Customers" />
           <Tab label="Trainings" />
+          <Tab label="Training Calendar" />
+          <Tab label="Training Time Chart" />
         </Tabs>
       </AppBar>
       {tabIndex === 0 && <Customerlist></Customerlist>}
       {tabIndex === 1 && <Trainingslist></Trainingslist>}
+      {tabIndex === 2 && <CalendarView></CalendarView>}
+      {tabIndex === 3 && <ChartView></ChartView>}
     </div>
   );
 }

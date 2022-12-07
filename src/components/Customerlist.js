@@ -21,15 +21,15 @@ function Customerlist() {
         {field: "city", sortable: true, filter: true, width: 120,},
         {field: "email", sortable: true, filter: true, width: 240,},
         {field: "phone", sortable: true, filter: true, width: 160,},
-        {   width: 200,  hide: true,
+        {   width: 200,
             cellRenderer: (params) => (
             <EditCustomer data={params.data} updateCustomer={updateCustomer} />
         ),},
-        {   width: 140,  hide: true,
+        {   width: 140,
             cellRenderer: (params) => (
             <AddTraining data={params.data} addTraining={addTraining} />
         ),},
-        {   width: 200, hide: true,
+        {   width: 200,
             cellRenderer: (params) => (
             <Button color="error" variant="contained" onClick={() => deleteCustomer(params.data)}>
                 {""} Delete{""}
@@ -118,6 +118,13 @@ function Customerlist() {
       const getParams = () => {
         return {
             fileName:"customers-ptapp.csv",
+            columnKeys: ["firstname",
+            "lastname", 
+            "streetaddress", 
+             "postcode", 
+             "city",
+             "email", 
+             "phone", ]
         };
       };
 
