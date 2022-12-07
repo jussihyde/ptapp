@@ -25,19 +25,19 @@ function CalendarView() {
             }
         })
         .then(jsondata => {
-            let data = [];
+            let events = [];
             json = Object.values(jsondata);
             for (var i = 0; i < json.length; i++) {
                   try {
                     startTime = new Date(json[i].date);
                     endTime = new Date(json[i].date);
                     endTime.setUTCMinutes(startTime.getUTCMinutes() + json[i].duration);
-                    data.push({
+                    events.push({
                         title: json[i].activity + " / " + json[i].customer.firstname + " " +json[i].customer.lastname,
                         start: startTime,
                         end: endTime
                     });
-                    setEventlist(data)
+                    setEventlist(events)
                 }   catch (err) { console.error(err) }
             }
         })
