@@ -6,7 +6,6 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 
 function CalendarView() {
     
-    const [data] = useState([]);
     const [eventlist, setEventlist] = useState([]);
     var [json] = useState({});
     var [startTime] = useState(null);
@@ -26,6 +25,7 @@ function CalendarView() {
             }
         })
         .then(jsondata => {
+            let data = [];
             json = Object.values(jsondata);
             for (var i = 0; i < json.length; i++) {
                   try {
@@ -44,16 +44,14 @@ function CalendarView() {
         .catch(err => console.error(err));
     };
 
-    
-
-        return (
-            <div>
-                <Calendar
-                    localizer={momentLocalizer(moment)}
-                    events={eventlist}
-                    style={{ height: 750, width: 1920 }} />
-            </div>
-        );
+    return (
+        <div>
+            <Calendar
+                localizer={momentLocalizer(moment)}
+                events={eventlist}
+                style={{ height: 750, width: 1920 }} />
+        </div>
+    );
 }
 
 export default CalendarView;
